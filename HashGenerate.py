@@ -1,7 +1,6 @@
 """
 Reference: https://www.geeksforgeeks.org/compare-two-files-using-hashing-in-python/
 """
-import sys
 import hashlib
 
 
