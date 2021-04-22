@@ -26,7 +26,7 @@ app.config['UPLOAD_FOLDER'] = "temp"
 app.config['MYSQL_HOST'] = 'us-cdbr-east-03.cleardb.com'
 app.config['MYSQL_USER'] = 'b4d5ecf0dad370'
 app.config['MYSQL_PASSWORD'] = '42506877'
-app.config['MYSQL_DB'] = '`heroku_3e5380c16d35e48`'
+app.config['MYSQL_DB'] = 'heroku_3e5380c16d35e48'
 
 mysql = MySQL(app)
 
