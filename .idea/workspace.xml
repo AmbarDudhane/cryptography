@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6223385c-5cb8-4a09-af7a-b8c449473339" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HashGenerate.py" beforeDir="false" afterPath="$PROJECT_DIR$/HashGenerate.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -137,7 +135,7 @@
       <workItem from="1618887622230" duration="15094000" />
       <workItem from="1618979922674" duration="3461000" />
       <workItem from="1619047057941" duration="427000" />
-      <workItem from="1619063269120" duration="706000" />
+      <workItem from="1619063269120" duration="1361000" />
     </task>
     <servers />
   </component>
