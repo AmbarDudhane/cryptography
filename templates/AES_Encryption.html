@@ -63,6 +63,7 @@
                 }
                 response.json().then(function(data) {
                   console.log("Key generated");
+                  document.getElementById("keytext").value = data.key
                 });
               })
               .catch(function(error) {
