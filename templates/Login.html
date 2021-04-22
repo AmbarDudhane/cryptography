@@ -1,0 +1,40 @@
+<html>
+	<head>
+		<link href="{{ url_for('static', filename='bootstrap/bootstrap.min.css') }}" rel="stylesheet" id="bootstrap-css">
+		<script src="{{ url_for('static', filename='bootstrap/bootstrap.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='bootstrap/jquery.min.js') }} "></script>
+		<link rel="stylesheet" href="{{ url_for('static', filename = 'login.css') }}">
+		<!------ Include the above in your HEAD tag ---------->
+	</head>
+	
+	<body>
+		<div class="wrapper fadeInDown">
+		  <div id="formContent">
+			<!-- Tabs Titles -->
+
+			<!-- Icon -->
+			<div class="fadeIn first">
+			  <img src="{{ url_for('static', filename='loginicon.png') }}" id="icon" alt="User Icon" />
+			  <!--h3>Login</h3-->
+			</div>
+
+			<!-- Login Form -->
+			<form action="checklogin" method = "POST">
+			  <input type="text" id="login" class="fadeIn second" name="login" placeholder="login(Email)">
+			  <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
+			  <input type="submit" class="fadeIn fourth" value="Log In">
+			</form>
+
+			<!-- Remind Passowrd -->
+			<div id="formFooter">
+			  <a class="" href="#">Forgot Password?</a>
+			</div>
+			<div id="formFooter">
+			  Don't have account? <a class="" href="showregister">Click here to create one</a>
+			</div>
+		  </div>
+		</div>
+	</body>
+</html>
+
+

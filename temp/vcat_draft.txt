@@ -1,0 +1,4 @@
+Virtual Programming Assistant using VCAT:
+1. Developed a virtual assistant primarily focused on providing an easy and efficient way for voice-based programming
+2. Designed classes which interprets audio commands and interacts with the browser's background
+3. Improved application's performance by defining the proper command structure
