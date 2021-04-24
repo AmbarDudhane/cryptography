@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6223385c-5cb8-4a09-af7a-b8c449473339" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RSA keys/private_key.pem" beforeDir="false" afterPath="$PROJECT_DIR$/RSA keys/private_key.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RSA keys/public_key.pem" beforeDir="false" afterPath="$PROJECT_DIR$/RSA keys/public_key.pem" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/encrypted/enc_sample.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/encrypted/enc_test123.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/key.key" beforeDir="false" afterPath="$PROJECT_DIR$/key.key" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/abcdef.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/enc_sample.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/enc_test123.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/sample.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/test123.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/vcat_draft.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -149,7 +136,7 @@
       <workItem from="1619047057941" duration="427000" />
       <workItem from="1619063269120" duration="4228000" />
       <workItem from="1619130414110" duration="1552000" />
-      <workItem from="1619288960937" duration="6104000" />
+      <workItem from="1619288960937" duration="6131000" />
     </task>
     <servers />
   </component>
