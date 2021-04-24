@@ -25,17 +25,21 @@
       <div class="mb-3">
           <button onclick="generatePrivateKey();" class="btn btn-primary btn-sm">Generate Private Key</button>
           <a href="downloadkey?keytype=private" class="link-primary">Download private key</a>
+          <br>
+          <div id="private_status" class="invisible"><span class="badge bg-success">Private key generated</span></div>
       </div>
       <div class="mb-3">
           <button onclick="generatePublicKey();" class="btn btn-primary btn-sm">Generate Public Key</button>
           <a href="downloadkey?keytype=public" class="link-primary">Download public key</a>
+          <br>
+          <div id="public_status" class="invisible"><span class="badge bg-success">Public key generated</span></div>
       </div>
 
        <form action="encryptRSA" method="post" enctype = "multipart/form-data">
        <div class="mb-3">
           <label for="formFile" class="form-label">Choose file to encrypt</label>
-           <input class="form-control" type="file" id="formFile" name="file" required><br>
-           <input type="submit" class="btn btn-primary btn-sm" value="Encrypt">
+          <input class="form-control" type="file" id="formFile" name="file" required><br>
+          <input type="submit" class="btn btn-primary btn-sm" value="Encrypt">
        </div>
        </form>
 
@@ -66,6 +70,7 @@
                 }
                 response.json().then(function(data) {
                     console.log(data);
+                    document.getElementById("private_status").className = "visible";
                 });
               })
               .catch(function(error) {
@@ -89,6 +94,7 @@
                 }
                 response.json().then(function(data) {
                     console.log(data);
+                    document.getElementById("public_status").className = "visible";
                 });
               })
               .catch(function(error) {
