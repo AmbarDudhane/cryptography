@@ -18,15 +18,15 @@ from HashGenerate import HashGenerator
 app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = "temp"
-# app.config['MYSQL_HOST'] = '127.0.0.1'
-# app.config['MYSQL_USER'] = 'root'
-# app.config['MYSQL_PASSWORD'] = 'mysql123'
-# app.config['MYSQL_DB'] = 'assignment3'
+app.config['MYSQL_HOST'] = '127.0.0.1'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'mysql123'
+app.config['MYSQL_DB'] = 'assignment3'
 
-app.config['MYSQL_HOST'] = 'us-cdbr-east-03.cleardb.com'
-app.config['MYSQL_USER'] = 'b4d5ecf0dad370'
-app.config['MYSQL_PASSWORD'] = '42506877'
-app.config['MYSQL_DB'] = 'heroku_3e5380c16d35e48'
+# app.config['MYSQL_HOST'] = 'us-cdbr-east-03.cleardb.com'
+# app.config['MYSQL_USER'] = 'b4d5ecf0dad370'
+# app.config['MYSQL_PASSWORD'] = '42506877'
+# app.config['MYSQL_DB'] = 'heroku_3e5380c16d35e48'
 
 mysql = MySQL(app)
 
@@ -90,6 +90,18 @@ def getadmin():
 def gethash():
     username = request.args.get("username")
     return render_template('Hash.html', username=username)
+
+@app.route('/downloadfile')
+def download():
+    filename = request.args.get('filename')
+    enc = request.args.get("enc")
+    print(filename+", enc:"+enc)
+    if enc == 'true':   # return file from encrypted folder
+        return send_file(r'./encrypted/'+filename, as_attachment=True)
+    elif enc == 'false':    # return file from decrypted folder
+        return send_file(r'./decrypted/'+filename, as_attachment=True)
+    return ""
+
 
 
 @app.route('/getAES')
@@ -192,7 +204,7 @@ def encryptRSA():
     # write the encrypted file
     with open("encrypted//enc_" + filename, "wb") as file:
         file.write(encrypted)
-    return "RSA Encryption Successful. You can view the file All Files section."
+    return "RSA Encryption Successful. You can <a href='downloadfile?filename=enc_"+filename+"&enc=true'>download the file here</a>"
 
 
 @app.route('/decryptRSA', methods=["POST"])
@@ -226,7 +238,7 @@ def decryptRSA():
     with open("decrypted//dec_" + filename, "wb") as file:
         file.write(original_message)
 
-    return "RSA Decryption Successful. You can view the file All Files section."
+    return "RSA Decryption Successful. You can <a href='downloadfile?filename=dec_"+filename+"&enc=false'>download the file here</a>"
 
 
 @app.route('/savenewpassword', methods=["POST"])
@@ -242,11 +254,6 @@ def savenewpassword():
     cur.close()
     res = make_response(jsonify({"Password Status": "Saved"}), 200)
     return res
-
-
-# @app.route('/index')
-# def index():
-#     return render_template('Index.html')
 
 
 def write_key(key):
@@ -274,14 +281,11 @@ def encryptAES():
     filename = secure_filename(fileobj.filename.lower())
     fileobj.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     # after saving, encrypt file
-    encryptSingleKey(filename)
-    return "AES Encryption Successful. You can view the file All Files section."
+    msg = encryptSingleKey(filename)
+    return msg
 
 
 def encryptSingleKey(filename):
-    """
-        Given a filename (str) and key (bytes), it encrypts the file and write it
-        """
     key = load_key()
     f = Fernet(key)
 
@@ -295,7 +299,8 @@ def encryptSingleKey(filename):
     # write the encrypted file
     with open("encrypted//enc_" + filename, "wb") as file:
         file.write(encrypted_data)
-    print("Encryption successful")
+    print("AES Encryption successful")
+    return "AES Encryption Successful. You can <a href='downloadfile?filename=enc_"+filename+"&enc=true'>download the file here</a>"
 
 
 @app.route('/decryptAES', methods=["POST"])
@@ -305,8 +310,8 @@ def decryptAES():
     filename = secure_filename(fileobj.filename.lower())
     fileobj.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     # after saving, decrypt file
-    decryptSingleKey(filename)
-    return "AES Decryption Successful. You can view the file All Files section."
+    msg = decryptSingleKey(filename)
+    return msg
 
 
 def decryptSingleKey(filename):
@@ -320,12 +325,12 @@ def decryptSingleKey(filename):
     # make new file and write decrypted content
     with open("decrypted//dec_" + filename, "wb") as file:
         file.write(decrypted_data)
-    print("decryption successful")
+    print("AES decryption successful")
+    return "AES Decryption Successful. You can <a href='downloadfile?filename=dec_" + filename + "&enc=false'>download the file here</a>"
 
 
 @app.route('/generateHash', methods=["POST"])
 def generateHash():
-    print("In generateHash")
     fileobj = request.files['file']
 
     filename = secure_filename(fileobj.filename.lower())
