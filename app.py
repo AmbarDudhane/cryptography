@@ -3,7 +3,7 @@ Reference: https://www.thepythoncode.com/article/encrypt-decrypt-files-symmetric
 RSA reference: https://nitratine.net/blog/post/asymmetric-encryption-and-decryption-in-python/
 """
 from cryptography.hazmat.backends import default_backend
-from flask import Flask, render_template, jsonify, make_response, request, send_file
+from flask import Flask, render_template, jsonify, make_response, request, send_file, url_for, redirect
 import os
 from flask_mysqldb import MySQL
 from werkzeug.utils import secure_filename
@@ -47,11 +47,16 @@ def checklogin():
         result = request.form
 
         temp = (result["login"], result["password"])
+
         cur = mysql.connection.cursor()
         cur.execute("SELECT email, password FROM tbluser")
         rv = cur.fetchall()
 
-        if temp in rv:
+        cur.close()
+
+        if result["login"] == "Admin" and result["password"] == "admin":
+            return redirect(url_for('getadmin'))
+        elif temp in rv:
             return render_template("Index.html", username=temp[0])
         else:
             return "Login unsuccessful"
@@ -83,13 +88,58 @@ def register():
 
 @app.route('/admin')
 def getadmin():
-    return render_template('Admin.html')
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT id, email, first_name, last_name from tbluser")
+    userdatarv = cur.fetchall()
+    cur.close()
+    return render_template("Admin.html", userdata=userdatarv)
+
+
+@app.route('/edituser')
+def edituser():
+    id = request.args.get("id")
+    print("Edit user id:", id)
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM tbluser where id="+id)
+    rv = cur.fetchall()
+    print("rv:", rv)
+    cur.close()
+    return render_template("AdminEditUser.html", userdata=rv)
+
+@app.route('/deleteuser')
+def deleteuser():
+    id = request.args.get("id")
+    cur = mysql.connection.cursor()
+    deleteQuery = "DELETE FROM tbluser where id="+id
+    cur.execute(deleteQuery)
+    mysql.connection.commit()
+    cur.close()
+    return "User record deleted. <a href='admin'>Go To Admin Page</a>"
+
+
+@app.route('/updateuser', methods=['POST'])
+def updateuser():
+    id = request.args.get("id")
+    print("update user record id:", id)
+    email = request.form['email']
+    firstname = request.form['fname']
+    lastname = request.form['lname']
+    password = request.form['password']
+    print("email:"+email+", firstname:"+firstname+", lastname:"+lastname+", password:"+password)
+    updateQuery = "UPDATE tbluser SET email='"+email+"', first_name='"+firstname+"', last_name='"+lastname+"', password='"+password+"' where id="+id
+    cur = mysql.connection.cursor()
+    cur.execute(updateQuery)
+    mysql.connection.commit()
+    cur.close()
+    print(id, " user record updated")
+    return "User record updated. <a href='admin'>Go To Admin Page</a>"
 
 
 @app.route('/gethash')
 def gethash():
     username = request.args.get("username")
     return render_template('Hash.html', username=username)
+
 
 @app.route('/downloadfile')
 def download():
@@ -101,7 +151,6 @@ def download():
     elif enc == 'false':    # return file from decrypted folder
         return send_file(r'./decrypted/'+filename, as_attachment=True)
     return ""
-
 
 
 @app.route('/getAES')

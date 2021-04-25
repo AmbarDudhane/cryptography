@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Edit User</title>
+</head>
+<body>
+    <h2>Edit User</h2>
+    <br><br>
+    <form action="updateuser?id={{ userdata[0][0] }}" method="post">
+        <label for="fname">First name:</label> <input type="text" name="fname" value="{{ userdata[0][2] }}"><br><br>
+        <label for="lname">Last name:</label> <input type="text" name="lname" value="{{ userdata[0][3] }}"><br><br>
+        <label for="password">Password:</label> <input type="text" name="password" value="{{ userdata[0][4] }}"><br><br>
+        <label for="email">Email:</label> <input type="text" name="email" value="{{ userdata[0][1] }}"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
