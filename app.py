@@ -95,22 +95,49 @@ def getadmin():
     return render_template("Admin.html", userdata=userdatarv)
 
 
+@app.route('/getadduser')
+def getadduser():
+    return render_template("AdminAddUser.html")
+
+
+@app.route('/addnewuser', methods=['POST'])
+def addnewuser():
+    email = request.form['email']
+    firstname = request.form['fname']
+    lastname = request.form['lname']
+    password = request.form['password']
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT email FROM tbluser")
+    rv = cur.fetchall()
+    print("add new user:", rv)
+    for t in rv:
+        if email == t[0]:
+            return "Email Already exists. Enter another email."
+
+    cur.execute("INSERT INTO tbluser (email, first_name, last_name, password) VALUES (%s, %s, %s, %s)",
+                (email, firstname, lastname, password))
+    mysql.connection.commit()
+    cur.close()
+    return "New user added successfully. <a href='admin'>Go To Admin Page</a>"
+
+
 @app.route('/edituser')
 def edituser():
     id = request.args.get("id")
     print("Edit user id:", id)
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM tbluser where id="+id)
+    cur.execute("SELECT * FROM tbluser where id=" + id)
     rv = cur.fetchall()
     print("rv:", rv)
     cur.close()
     return render_template("AdminEditUser.html", userdata=rv)
 
+
 @app.route('/deleteuser')
 def deleteuser():
     id = request.args.get("id")
     cur = mysql.connection.cursor()
-    deleteQuery = "DELETE FROM tbluser where id="+id
+    deleteQuery = "DELETE FROM tbluser where id=" + id
     cur.execute(deleteQuery)
     mysql.connection.commit()
     cur.close()
@@ -125,8 +152,8 @@ def updateuser():
     firstname = request.form['fname']
     lastname = request.form['lname']
     password = request.form['password']
-    print("email:"+email+", firstname:"+firstname+", lastname:"+lastname+", password:"+password)
-    updateQuery = "UPDATE tbluser SET email='"+email+"', first_name='"+firstname+"', last_name='"+lastname+"', password='"+password+"' where id="+id
+    print("email:" + email + ", firstname:" + firstname + ", lastname:" + lastname + ", password:" + password)
+    updateQuery = "UPDATE tbluser SET email='" + email + "', first_name='" + firstname + "', last_name='" + lastname + "', password='" + password + "' where id=" + id
     cur = mysql.connection.cursor()
     cur.execute(updateQuery)
     mysql.connection.commit()
@@ -145,11 +172,11 @@ def gethash():
 def download():
     filename = request.args.get('filename')
     enc = request.args.get("enc")
-    print(filename+", enc:"+enc)
-    if enc == 'true':   # return file from encrypted folder
-        return send_file(r'./encrypted/'+filename, as_attachment=True)
-    elif enc == 'false':    # return file from decrypted folder
-        return send_file(r'./decrypted/'+filename, as_attachment=True)
+    print(filename + ", enc:" + enc)
+    if enc == 'true':  # return file from encrypted folder
+        return send_file(r'./encrypted/' + filename, as_attachment=True)
+    elif enc == 'false':  # return file from decrypted folder
+        return send_file(r'./decrypted/' + filename, as_attachment=True)
     return ""
 
 
@@ -253,7 +280,7 @@ def encryptRSA():
     # write the encrypted file
     with open("encrypted//enc_" + filename, "wb") as file:
         file.write(encrypted)
-    return "RSA Encryption Successful. You can <a href='downloadfile?filename=enc_"+filename+"&enc=true'>download the file here</a>"
+    return "RSA Encryption Successful. You can <a href='downloadfile?filename=enc_" + filename + "&enc=true'>download the file here</a>"
 
 
 @app.route('/decryptRSA', methods=["POST"])
@@ -287,7 +314,7 @@ def decryptRSA():
     with open("decrypted//dec_" + filename, "wb") as file:
         file.write(original_message)
 
-    return "RSA Decryption Successful. You can <a href='downloadfile?filename=dec_"+filename+"&enc=false'>download the file here</a>"
+    return "RSA Decryption Successful. You can <a href='downloadfile?filename=dec_" + filename + "&enc=false'>download the file here</a>"
 
 
 @app.route('/savenewpassword', methods=["POST"])
@@ -349,7 +376,7 @@ def encryptSingleKey(filename):
     with open("encrypted//enc_" + filename, "wb") as file:
         file.write(encrypted_data)
     print("AES Encryption successful")
-    return "AES Encryption Successful. You can <a href='downloadfile?filename=enc_"+filename+"&enc=true'>download the file here</a>"
+    return "AES Encryption Successful. You can <a href='downloadfile?filename=enc_" + filename + "&enc=true'>download the file here</a>"
 
 
 @app.route('/decryptAES', methods=["POST"])
@@ -388,7 +415,7 @@ def generateHash():
     hg = HashGenerator()
     hash = hg.hashfile("temp//" + filename)
     print("Hash is", str(hash))
-    return "The generated hash is "+str(hash)
+    return "The generated hash is " + str(hash)
 
 
 if __name__ == '__main__':
